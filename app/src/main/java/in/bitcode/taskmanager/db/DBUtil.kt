@@ -15,7 +15,7 @@ class DBUtil(context: Context?) {
         mDb = TaskDBHelper(context, "db_tasks", null, 1).writableDatabase
     }
 
-    fun getAllTasks(): ArrayList<Task>? {
+    fun getAllTasks(): ArrayList<Task> {
 
         var listTasks: ArrayList<Task> = ArrayList<Task>()
 

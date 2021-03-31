@@ -6,22 +6,40 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
-class TasksAdapter : RecyclerView.Adapter<TasksAdapter.TaskHolder> {
-    private var mListTasks: ArrayList<Task>? = null
+class TasksAdapter(private var mListTasks: ArrayList<Task>) : RecyclerView.Adapter<TasksAdapter.TaskHolder>() {
 
-    constructor(listTasks: ArrayList<Task>?) {
-        mListTasks = listTasks
+
+    interface OnTaskClickListener {
+        fun onTaskClick(task: Task, position: Int)
     }
 
-    class TaskHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var mTxtTaskTile : TextView = view.findViewById(R.id.txtTaskTitle)
-        var mTxtTaskAddedOn : TextView = view.findViewById(R.id.txtTaskAddedOn)
+    var mOnTaskClickListener: OnTaskClickListener? = null
+        set(onTaskClickListener) {
+            field = onTaskClickListener
+        }
+
+
+    inner class TaskHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+        var mTxtTaskTile: TextView = view.findViewById(R.id.txtTaskTitle)
+        var mTxtTaskAddedOn: TextView = view.findViewById(R.id.txtTaskAddedOn)
+
+        init {
+            view.setOnClickListener(View.OnClickListener {
+                Toast.makeText(it.context, "" + adapterPosition , Toast.LENGTH_LONG).show()
+                if(mOnTaskClickListener != null) {
+                    mOnTaskClickListener?.onTaskClick( mListTasks.get(adapterPosition), adapterPosition)
+                }
+            })
+        }
+
     }
 
     override fun getItemCount(): Int {
-        if ( mListTasks != null) {
+        if (mListTasks != null) {
             return mListTasks!!.size
         }
 
@@ -29,7 +47,7 @@ class TasksAdapter : RecyclerView.Adapter<TasksAdapter.TaskHolder> {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskHolder {
-        var view = LayoutInflater.from(parent.context).inflate(R.layout.task_view, null )
+        var view = LayoutInflater.from(parent.context).inflate(R.layout.task_view, null)
         return TaskHolder(view)
     }
 

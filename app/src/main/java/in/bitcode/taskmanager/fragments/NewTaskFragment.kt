@@ -42,6 +42,10 @@ class NewTaskFragment : Fragment() {
     ): View? {
 
         var view = inflater.inflate(R.layout.new_task_fragment, null);
+        view.setOnClickListener(
+            View.OnClickListener {
+
+            })
 
         mEdtTaskTitle = view.findViewById(R.id.edtTaskTitle)
         mTxtAddedOn = view.findViewById(R.id.txtAddedOn)
@@ -86,8 +90,7 @@ class NewTaskFragment : Fragment() {
                     )
                 }
 
-            }
-            else {
+            } else {
                 if (mOnTaskListener != null) {
                     mOnTaskListener?.onFailure()
                 }
