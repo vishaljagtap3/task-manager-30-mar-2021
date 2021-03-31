@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteCursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
-class DBUtil(context: Context) {
+class DBUtil(context: Context?) {
 
     private val mDb: SQLiteDatabase
 
@@ -39,21 +39,26 @@ class DBUtil(context: Context) {
         return listTasks;
     }
 
-    fun addTask(title: String): Boolean? {
+    fun addTask(title: String, addedOn: Long, status: Boolean): Long {
 
-        var nextTaskId = mDb.rawQuery("select max(id)+1 as max_id from tasks", null).getLong(0)
+        var cursor = mDb.rawQuery("select max(id)+1 as max_id from tasks", null)
+        if(cursor.count == 0) {
+            return -1.toLong()
+        }
 
+        cursor.moveToNext()
+        var nextTaskId = cursor.getLong(cursor.getColumnIndex("max_id"))
 
         var values = ContentValues()
         values.put("id", nextTaskId)
         values.put("title", title)
-        values.put("added_on", System.currentTimeMillis())
-        values.put("status", false)
+        values.put("added_on", addedOn)
+        values.put("status", status)
 
-        if ( mDb.insert("tasks", null, values) != -1 as Long )
-            return true
+        if ( mDb.insert("tasks", null, values) != -1.toLong() )
+            return nextTaskId
 
-        return false
+        return -1.toLong()
     }
 
     fun deleteTask(id: Long): Boolean? {
@@ -69,7 +74,7 @@ class DBUtil(context: Context) {
     }
 
     private class TaskDBHelper(
-        context: Context,
+        context: Context?,
         dbName: String,
         cursorFactory: SQLiteDatabase.CursorFactory?,
         version: Int

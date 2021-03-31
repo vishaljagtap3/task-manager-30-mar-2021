@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">TaskManager</string>
+    <string name="menu_add_task">Add Task</string>
+    <string name="hint_new_task_title">text for task</string>
 </resources>

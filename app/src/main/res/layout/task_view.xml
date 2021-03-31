@@ -9,6 +9,7 @@
     android:paddingBottom="8dp">
 
     <TextView
+        android:background="#DEDEDE"
         android:id="@+id/txtTaskTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

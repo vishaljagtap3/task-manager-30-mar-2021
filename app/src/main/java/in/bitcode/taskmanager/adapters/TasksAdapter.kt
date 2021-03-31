@@ -16,13 +16,8 @@ class TasksAdapter : RecyclerView.Adapter<TasksAdapter.TaskHolder> {
     }
 
     class TaskHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var mTxtTaskTile : TextView
-        var mTxtTaskAddedOn : TextView
-
-        init {
-            mTxtTaskTile = view.findViewById(R.id.txtTaskTitle)
-            mTxtTaskAddedOn = view.findViewById(R.id.txtTaskAddedOn)
-        }
+        var mTxtTaskTile : TextView = view.findViewById(R.id.txtTaskTitle)
+        var mTxtTaskAddedOn : TextView = view.findViewById(R.id.txtTaskAddedOn)
     }
 
     override fun getItemCount(): Int {
@@ -41,7 +36,7 @@ class TasksAdapter : RecyclerView.Adapter<TasksAdapter.TaskHolder> {
     override fun onBindViewHolder(holder: TaskHolder, position: Int) {
         var task = mListTasks?.get(position)
 
-        holder.mTxtTaskTile.setText( task?.getTitle())
-        holder.mTxtTaskAddedOn.setText( "${task?.getAddedOn()}" )
+        holder.mTxtTaskTile.text = task?.getTitle()
+        holder.mTxtTaskAddedOn.text = "${task?.getAddedOn()}"
     }
 }
